@@ -1,0 +1,11 @@
+#display {
+    letter-spacing: 0.5em;
+}
+
+ruby {
+    ruby-position: under;
+}
+
+rt {
+    letter-spacing: 0.2em;
+}
