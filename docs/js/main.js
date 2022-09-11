@@ -1,4 +1,5 @@
 document.getElementById("inputText").addEventListener("input", show)
+document.getElementById("kanaMap").addEventListener("change", show)
 
 function show() {
     const inputText = document.getElementById("inputText").value
@@ -7,7 +8,12 @@ function show() {
     const noKanaList = splitsList[0]
     const kanaList = splitsList[1]
 
-    const kanaMap = mapKanaList(kanaList)
+    var mapElement = document.getElementById("kanaMap")
+    inputKanaStr = mapElement.value
+
+    const kanaMap = mapKanaList(kanaList, inputKanaStr)
+    mapElement.value = getKanaStr(kanaMap)
+
     var numberList = []
     for (const kana of kanaList) {
         numberList.push(transKana(kana, kanaMap))

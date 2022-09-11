@@ -1,11 +1,15 @@
-function mapKanaList(list) {
-    var map = new Set()
+function mapKanaList(list, base = '') {
+    var map = new Set(base)
     for(const kana of list) {
         for (let index = 0; index < kana.length; index++) {
             map.add(kana[index])
         }
     }
     return [...map]
+}
+
+function getKanaStr(map) {
+    return map.join('')
 }
 
 function transKana(kana, map) {

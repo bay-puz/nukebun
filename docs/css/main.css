@@ -2,6 +2,10 @@
     letter-spacing: 0.5em;
 }
 
+#kanaMap {
+    width: 30em;
+}
+
 ruby {
     ruby-position: under;
 }
