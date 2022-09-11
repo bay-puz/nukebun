@@ -9,9 +9,9 @@ function show() {
     const kanaList = splitsList[1]
 
     var mapElement = document.getElementById("kanaMap")
-    inputKanaStr = mapElement.value
+    inputKanaSet = toKanaSet(mapElement.value)
 
-    const kanaMap = mapKanaList(kanaList, inputKanaStr)
+    const kanaMap = mapKanaList(kanaList, inputKanaSet)
     mapElement.value = getKanaStr(kanaMap)
 
     var numberList = []
