@@ -1,24 +1,24 @@
-function mapKanaList(list, set) {
+function getKanaSet(baseSet, kanaList) {
     var allKanaSet = new Set()
-    for(const word of list) {
+    for(const word of kanaList) {
         for (let index = 0; index < word.length; index++) {
             allKanaSet.add(word[index])
         }
     }
-    for (const kana of set) {
+    for (const kana of baseSet) {
         if (!allKanaSet.has(kana)) {
-            set.delete(kana)
+            baseSet.delete(kana)
         }
     }
     for (const kana of allKanaSet) {
-        if (!set.has(kana)) {
-            set.add(kana)
+        if (!baseSet.has(kana)) {
+            baseSet.add(kana)
         }
     }
-    return [...set]
+    return [...baseSet]
 }
 
-function toKanaSet(kanaStr) {
+function getKanaSetFromStr(kanaStr) {
     var set = new Set()
     for (let index = 0; index < kanaStr.length; index++) {
         char = kanaStr.charAt(index)
@@ -29,15 +29,15 @@ function toKanaSet(kanaStr) {
     return set
 }
 
-function getKanaStr(map) {
-    return map.join('')
+function getKanaStr(set) {
+    return set.join('')
 }
 
-function transKana(kana, map) {
+function transKana(kana, set) {
     var transList = []
     for (let index = 0; index < kana.length; index++) {
         char = kana.charAt(index)
-        transList.push(map.indexOf(char) + 1)
+        transList.push(set.indexOf(char) + 1)
     }
     return transList
 }

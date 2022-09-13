@@ -71,3 +71,33 @@ function convertNumber(numbers) {
     }
     return spanElement
 }
+
+function countKana(kanaSet, kanaList) {
+    var countsKana = new Object()
+    for (const kana of kanaSet) {
+        countsKana[kana] = 0
+    }
+    for (const word of kanaList) {
+        for (let index = 0; index < word.length; index++) {
+            const char = word[index];
+            countsKana[char] += 1
+        }
+    }
+    var entries = Object.entries(countsKana)
+    entries.sort((a,b)=>{return a[1] - b[1]}) // 少ない順
+    var countMap = new Map()
+    for (const kanaCount of entries) {
+        const kana = kanaCount[0]
+        const count = kanaCount[1]
+        if (countMap.has(count)){
+            var array = countMap.get(count)
+            array.push(kana)
+            countMap.set(count, array)
+        }
+        else {
+            const array = [kana]
+            countMap.set(count, array)
+        }
+    }
+    return countMap
+}
