@@ -13,6 +13,7 @@ function show() {
 
     const kanaMap = mapKanaList(kanaList, inputKanaSet)
     mapElement.value = getKanaStr(kanaMap)
+    mapElement.size = kanaMap.length * 2 + 10
 
     var numberList = []
     for (const kana of kanaList) {

@@ -2,8 +2,9 @@
     letter-spacing: 0.5em;
 }
 
-#kanaMap {
-    width: 30em;
+#inputText {
+    height: 10em;
+    width: 50em;
 }
 
 ruby {

@@ -1,7 +1,18 @@
 function mapKanaList(list, set) {
-    for(const kana of list) {
-        for (let index = 0; index < kana.length; index++) {
-            set.add(kana[index])
+    var allKanaSet = new Set()
+    for(const word of list) {
+        for (let index = 0; index < word.length; index++) {
+            allKanaSet.add(word[index])
+        }
+    }
+    for (const kana of set) {
+        if (!allKanaSet.has(kana)) {
+            set.delete(kana)
+        }
+    }
+    for (const kana of allKanaSet) {
+        if (!set.has(kana)) {
+            set.add(kana)
         }
     }
     return [...set]
