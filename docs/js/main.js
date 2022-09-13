@@ -1,6 +1,18 @@
 document.getElementById("inputText").addEventListener("input", show)
 document.getElementById("kanaMap").addEventListener("change", show)
 
+function main() {
+    var params = new URLSearchParams(document.location.search);
+    if (params.has("t")) {
+        document.getElementById("inputText").value = params.get("t")
+    }
+    if (params.has("m")) {
+        document.getElementById("kanaMap").value = params.get("m")
+    }
+    show()
+}
+main();
+
 function show() {
     const inputText = document.getElementById("inputText").value
     const splitsList = splitText(inputText)

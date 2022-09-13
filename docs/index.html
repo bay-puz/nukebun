@@ -9,13 +9,20 @@
         <head>
             <h1>カタカナ抜け文</h1>
         </head>
-        <div id="inputErea">
-            <textarea id="inputText"></textarea>
-        </div>
-        <div>
-            <label for="kanaMap">カナ一覧</label>
-            <input type="text" id="kanaMap" size="30">
-        </div>
+        <form target="_blank">
+            <div>
+                <textarea id="inputText" name="t"></textarea>
+            </div>
+            <div>
+                <label for="kanaMap">カナ一覧</label>
+                <input type="text" id="kanaMap" name="m" size="30">
+            </div>
+            <div>
+                <!-- kanaMapでエンターを押しても更新しないようにダミーを置く -->
+                <input type="text" class="dummy">
+                <button type="button" onclick="submit()">URL発行</button>
+            </div>
+        </form>
         <div id="statErea">
         </div>
         <div id="displayErea">
