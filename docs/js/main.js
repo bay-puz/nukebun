@@ -51,11 +51,25 @@ function show() {
         countElement.appendChild(element)
     }
 
-    const sameList = getDuplicatedWords(kanaWord)
+    const wordRelations  = getWordRelations(kanaWord)
+
+    const sameList = wordRelations.same
     var sameElement = document.getElementById("sameWord")
     sameElement.innerText = (sameList.length > 0) ? sameList.join('、') : "なし"
 
-    const includedList = getIncludedWords(kanaWord)
+    const sameKind = wordRelations.sameKind
+    var sameKindList = new Array()
+    for (const same of sameKind) {
+        sameKindList.push(same.join('・'))
+    }
+    var sameKindElement = document.getElementById("sameKindWord")
+    sameKindElement.innerText = (sameKindList.length > 0) ? sameKindList.join('、') : "なし"
+
+    const includedMap = wordRelations.included
+    var includedList = new Array()
+    for (const [word, includings] of includedMap) {
+        includedList.push(word + "（" + includings.join('、') + "）")
+    }
     var includedElement = document.getElementById("includedWord")
     includedElement.innerText = (includedList.length > 0) ? includedList.join('、') : "なし"
 }

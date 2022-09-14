@@ -102,19 +102,6 @@ function countKana(kanaSet, wordList) {
     return countMap
 }
 
-function getDuplicatedWords(wordList) {
-    var sameList = []
-    var uniqWordList = Array.from(new Set(wordList))
-    for (const word of wordList) {
-        if (uniqWordList.at(0) === word) {
-            uniqWordList.shift()
-            continue
-        }
-        sameList.push(word)
-    }
-    return sameList;
-}
-
 function getKanaListFromStr(word) {
     return Array.from(getKanaSetFromStr(word)).sort()
 }
@@ -131,23 +118,57 @@ function isIncluded(list1, list2) {
     return true
 }
 
-function getIncludedWords(wordList) {
-    var includedWords = []
-    for (const word1 of wordList) {
-        var includings = []
-        for (const word2 of wordList) {
+function getWordRelations(wordList) {
+    var sameWords = []
+    var uniqWordList = Array.from(new Set(wordList))
+    var index = 0
+    for (const word of wordList) {
+        if (uniqWordList.at(index) === word) {
+            index += 1
+            continue
+        }
+        sameWords.push(word)
+    }
+
+    var includedWords = new Map()
+    var sameKindWords = []
+    for (let index1 = 0; index1 < uniqWordList.length; index1++) {
+        const word1 = uniqWordList[index1];
+        for (let index2 = index1 + 1; index2 < uniqWordList.length; index2++) {
+            const word2 = uniqWordList[index2];
             if (word1 === word2) {
+                sameWords.push(word1)
                 continue
             }
             const kana1 = getKanaListFromStr(word1)
             const kana2 = getKanaListFromStr(word2)
+            if (kana1.toString() === kana2.toString()) {
+                sameKindWords.push([word1, word2])
+                continue
+            }
             if (isIncluded(kana1, kana2)) {
-                includings.push(word2)
+                if (includedWords.has(word1)) {
+                    var addedList = includedWords.get(word1)
+                    addedList.push(word2)
+                    includedWords.set(word1, addedList)
+                }
+                else {
+                    includedWords.set(word1, [word2])
+                }
+                continue
+            }
+            if (isIncluded(kana2, kana1)) {
+                if (includedWords.has(word2)) {
+                    var addedList = includedWords.get(word2)
+                    addedList.push(word1)
+                    includedWords.set(word2, addedList)
+                }
+                else {
+                    includedWords.set(word2, [word1])
+                }
+                continue
             }
         }
-        if (includings.length > 0) {
-            includedWords.push(word1 + "（" + includings.join('、') + "）")
-        }
     }
-    return includedWords
+    return {"same": sameWords, "sameKind": sameKindWords, "included": includedWords}
 }
