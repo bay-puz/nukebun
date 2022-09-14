@@ -38,6 +38,9 @@ function show() {
         displayElement.appendChild(convertNoKana(noKanaWord[index]))
         displayElement.appendChild(convertNumber(numberList[index]))
     }
+    if (kanaWord.length < noKanaWord.length) {
+        displayElement.appendChild(convertNoKana(noKanaWord[noKanaWord.length - 1]))
+    }
 
     const counts = countKana(kanaSet, kanaWord)
     var countElement = document.getElementById("countKana")
@@ -48,7 +51,11 @@ function show() {
         countElement.appendChild(element)
     }
 
-    const sameList = getDuplicatedWord(kanaWord)
+    const sameList = getDuplicatedWords(kanaWord)
     var sameElement = document.getElementById("sameWord")
     sameElement.innerText = (sameList.length > 0) ? sameList.join('、') : "なし"
+
+    const includedList = getIncludedWords(kanaWord)
+    var includedElement = document.getElementById("includedWord")
+    includedElement.innerText = (includedList.length > 0) ? includedList.join('、') : "なし"
 }

@@ -41,9 +41,6 @@ function splitText(text) {
         if (index < text.length - 1) {
             tmpStr = normalizeKana(text.charAt(index + 1))
         }
-        else if (!isKana(tmpStr)) {
-            kanaList.push('')
-        }
     }
     var splitList = []
     splitList.push(noKanaList)
@@ -102,7 +99,7 @@ function countKana(kanaSet, wordList) {
     return countMap
 }
 
-function getDuplicatedWord(wordList) {
+function getDuplicatedWords(wordList) {
     var sameList = []
     var uniqWordList = Array.from(new Set(wordList))
     for (const word of wordList) {
@@ -113,4 +110,37 @@ function getDuplicatedWord(wordList) {
         sameList.push(word)
     }
     return sameList;
+}
+
+function getKanaListFromStr(word) {
+    return Array.from(getKanaSetFromStr(word)).sort()
+}
+
+function isIncluded(list1, list2) {
+    if (list1.length >= list2.length) {
+        return false
+    }
+    for (const kana of list1) {
+        if (!list2.includes(kana)) {
+            return false
+        }
+    }
+    return true
+}
+
+function getIncludedWords(wordList) {
+    var includedWords = []
+    for (const word1 of wordList) {
+        for (const word2 of wordList) {
+            if (word1 === word2) {
+                continue
+            }
+            const kana1 = getKanaListFromStr(word1)
+            const kana2 = getKanaListFromStr(word2)
+            if (isIncluded(kana1, kana2)) {
+                includedWords.push(word1 + "(" + word2 + ")")
+            }
+        }
+    }
+    return includedWords
 }
