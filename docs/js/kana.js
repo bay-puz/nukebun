@@ -72,12 +72,12 @@ function convertNumber(numbers) {
     return spanElement
 }
 
-function countKana(kanaSet, kanaList) {
+function countKana(kanaSet, wordList) {
     var countsKana = new Object()
     for (const kana of kanaSet) {
         countsKana[kana] = 0
     }
-    for (const word of kanaList) {
+    for (const word of wordList) {
         for (let index = 0; index < word.length; index++) {
             const char = word[index];
             countsKana[char] += 1
@@ -100,4 +100,17 @@ function countKana(kanaSet, kanaList) {
         }
     }
     return countMap
+}
+
+function getDuplicatedWord(wordList) {
+    var sameList = []
+    var uniqWordList = Array.from(new Set(wordList))
+    for (const word of wordList) {
+        if (uniqWordList.at(0) === word) {
+            uniqWordList.shift()
+            continue
+        }
+        sameList.push(word)
+    }
+    return sameList;
 }
