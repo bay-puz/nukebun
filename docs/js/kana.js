@@ -1,5 +1,8 @@
 function isKana(char) {
-    return ('ァ'.codePointAt(0) <= char.codePointAt(0) && char.codePointAt(0) <= 'ー'.codePointAt(0))
+    if (char.charAt(0) === "ー") {
+        return true
+    }
+    return ('ァ'.codePointAt(0) <= char.codePointAt(0) && char.codePointAt(0) <= 'ヺ'.codePointAt(0))
 }
 
 function normalizeKana(char) {
