@@ -134,6 +134,7 @@ function isIncluded(list1, list2) {
 function getIncludedWords(wordList) {
     var includedWords = []
     for (const word1 of wordList) {
+        var includings = []
         for (const word2 of wordList) {
             if (word1 === word2) {
                 continue
@@ -141,8 +142,11 @@ function getIncludedWords(wordList) {
             const kana1 = getKanaListFromStr(word1)
             const kana2 = getKanaListFromStr(word2)
             if (isIncluded(kana1, kana2)) {
-                includedWords.push(word1 + "(" + word2 + ")")
+                includings.push(word2)
             }
+        }
+        if (includings.length > 0) {
+            includedWords.push(word1 + "（" + includings.join('、') + "）")
         }
     }
     return includedWords
