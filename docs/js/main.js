@@ -25,7 +25,7 @@ function show() {
 
     const kanaSet = getKanaSet(inputKanaSet, kanaWord)
     kanaElement.value = getKanaStr(kanaSet)
-    kanaElement.size = kanaSet.length * 2 + 10
+    kanaElement.size = kanaSet.length * 2 + 2
 
     var numberList = []
     for (const kana of kanaWord) {
