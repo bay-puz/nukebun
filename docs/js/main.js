@@ -42,6 +42,33 @@ function show() {
         displayElement.appendChild(convertNoKana(noKanaWord[noKanaWord.length - 1]))
     }
 
+    var answerElement = document.getElementById("answer")
+    answerElement.innerText = ''
+
+    var headElement = document.createElement("tr")
+    var bodyElement = document.createElement("tr")
+    for (let index = 0; index < kanaSet.length; index++) {
+        const kana = kanaSet[index]
+        var thElement = document.createElement("th")
+        thElement.innerText = index + 1
+        headElement.appendChild(thElement)
+        var tdElement = document.createElement("td")
+        var hiddenKanaElement = document.createElement("span")
+        hiddenKanaElement.innerText = kana
+        hiddenKanaElement.classList.add("hidden")
+        tdElement.appendChild(hiddenKanaElement)
+        bodyElement.appendChild(tdElement)
+    }
+    var theadElement = document.createElement("thead")
+    theadElement.appendChild(headElement)
+    var tbodyElement = document.createElement("tbody")
+    tbodyElement.appendChild(bodyElement)
+
+    var tableElement = document.createElement("table")
+    tableElement.appendChild(theadElement)
+    tableElement.appendChild(tbodyElement)
+    answerElement.appendChild(tableElement)
+
     const counts = countKana(kanaSet, kanaWord)
     var countElement = document.getElementById("countKana")
     countElement.innerText = ''
