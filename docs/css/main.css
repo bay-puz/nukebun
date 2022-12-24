@@ -1,0 +1,39 @@
+#inputText {
+    height: 10em;
+    width: 50em;
+}
+
+#kanaAll {
+    font-family: monospace;
+}
+
+#display {
+    letter-spacing: 0.5em;
+}
+
+#display ruby {
+    ruby-position: under;
+}
+
+#display rt {
+    letter-spacing: 0.2em;
+}
+
+#answer table {
+    border-collapse: collapse;
+}
+
+#answer th{
+    font-size: small;
+}
+
+#answer td{
+    border: 1px solid;
+    min-width: 1.5em;
+    max-width: 1.5em;
+    height: 1.5em;
+}
+
+.hidden {
+    display: none;
+}
