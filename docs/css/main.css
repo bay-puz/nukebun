@@ -85,6 +85,10 @@ ruby {
     text-align: center;
 }
 
+.highlight {
+    background-color: beige;
+}
+
 .hidden {
     display: none;
 }

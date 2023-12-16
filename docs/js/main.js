@@ -6,6 +6,8 @@ document.getElementById("showEditUrl").addEventListener("click", function(){show
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl("solve")} );
 document.getElementById("showSolveCheckUrl").addEventListener("click", function(){showUrl("solveCheck")} );
 
+document.getElementById("problem").addEventListener("click", clickProblem);
+
 function setProblem() {
     var params = new URLSearchParams(document.location.search);
     setMode(params.get("m"))
@@ -68,4 +70,9 @@ function setMode(mode) {
     for (const element of elements) {
         element.classList.add("hidden")
     }
+}
+
+function clickProblem(event) {
+    var element = document.elementFromPoint(event.pageX, event.pageY)
+    highlightElement(element)
 }
