@@ -39,10 +39,37 @@ function createProblemElement(numberList, noKanaList) {
         return element
     }
     for (let index = 0; index < numberList.length; index++) {
-        element.appendChild(convertNoKana(noKanaList[index]))
-        element.appendChild(convertNumber(numberList[index]))
+        element.appendChild(createNoKanaWordElement(noKanaList[index]))
+        element.appendChild(createKanaWordElement(numberList[index]))
     }
     return element
+}
+
+function createNoKanaWordElement(str) {
+    var spanElement = document.createElement("span")
+    spanElement.innerText = str
+    return spanElement
+}
+
+function createKanaWordElement(numbers) {
+    var spanElement = document.createElement("span")
+    spanElement.classList.add("kanaWord")
+    for (const number of numbers) {
+        spanElement.appendChild(createKanaElement(number))
+    }
+    return spanElement
+}
+
+function createKanaElement(number, kana = "") {
+    var rubyElement = document.createElement("ruby")
+    rubyElement.innerText = kana.length === 1 ? kana : "　"
+    rubyElement.classList.add("answerChar" + number)
+
+    var rtElement = document.createElement("rt")
+    rtElement.innerText = number
+    rubyElement.appendChild(rtElement)
+
+    return rubyElement
 }
 
 function createAnswerElement(length) {
@@ -66,7 +93,30 @@ function createAnswerBodyElement(length) {
     var bodyElement = document.createElement("tr")
     for (let index = 0; index < length; index++) {
         var tdElement = document.createElement("td")
+        tdElement.appendChild(createInputCharElement(index))
         bodyElement.appendChild(tdElement)
     }
     return bodyElement
+}
+
+function createInputCharElement(index) {
+    const elementId = "answerChar" + String(index + 1)
+    var inputElement = document.createElement("input")
+    inputElement.id = elementId
+    inputElement.classList.add("charInput")
+    inputElement.addEventListener("change", function(){writeChar(index + 1)})
+    return inputElement
+}
+
+function writeChar(id) {
+    const elementId = "answerChar" + id
+    const inputElement = document.getElementById(elementId)
+    const inputChar = getKatakana(inputElement.value)
+
+    var charElements = document.getElementsByClassName(elementId)
+    for (var charElement of charElements) {
+        const newElement = createKanaElement(id, inputChar)
+        charElement.innerHTML = newElement.innerHTML
+    }
+    inputElement.value = inputChar
 }

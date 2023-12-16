@@ -54,11 +54,12 @@ footer {
 }
 
 .kanaWord {
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
 }
 
 ruby {
     ruby-position: under;
+    border-bottom: solid thin;
 }
 
 #answer table {
@@ -76,6 +77,12 @@ ruby {
     min-width: 1.5em;
     max-width: 1.5em;
     height: 1.5em;
+}
+
+.charInput {
+    width: 1.2em;
+    border: none;
+    text-align: center;
 }
 
 .hidden {

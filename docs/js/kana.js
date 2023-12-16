@@ -5,6 +5,16 @@ function isKana(char) {
     return ('ァ'.codePointAt(0) <= char.codePointAt(0) && char.codePointAt(0) <= 'ヺ'.codePointAt(0))
 }
 
+function isHira(char) {
+    return ('ぁ'.codePointAt(0) <= char.codePointAt(0) && char.codePointAt(0) <= 'ゖ'.codePointAt(0))
+}
+
+function convertHira(char) {
+    const code = char.codePointAt(0)
+    const kata = String.fromCodePoint(code + 96)
+    return normalizeKana(kata)
+}
+
 function normalizeKana(char) {
     if(!isKana(char)) {
         return char
@@ -51,28 +61,6 @@ function splitText(textLine) {
         splitList.push('')
     }
     return splitList
-}
-
-function convertNoKana(str) {
-    var spanElement = document.createElement("span")
-    spanElement.innerText = str
-    return spanElement
-}
-
-function convertNumber(numbers) {
-    var spanElement = document.createElement("span")
-    spanElement.classList.add("kanaWord")
-    for (const number of numbers) {
-        const rtElement = document.createElement("rt")
-        rtElement.innerText = number
-
-        const rubyElement = document.createElement("ruby")
-        rubyElement.innerText = "＿"
-        rubyElement.appendChild(rtElement)
-
-        spanElement.appendChild(rubyElement)
-    }
-    return spanElement
 }
 
 function isIncluded(list1, list2) {
@@ -125,4 +113,17 @@ function getNumberList(kanaStr, kanaSet) {
         numbers.push(kanaSet.indexOf(char) + 1)
     }
     return numbers
+}
+
+function getKatakana(string) {
+    for (let index = 0; index < string.length; index++) {
+        const char = string.substring(index, index + 1);
+        if (isHira(char)) {
+            return convertHira(char)
+        }
+        if (isKana(char)) {
+            return normalizeKana(char)
+        }
+    }
+    return ""
 }
