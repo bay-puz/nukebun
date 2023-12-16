@@ -1,3 +1,49 @@
+body {
+    text-align: center;
+}
+
+button {
+    padding: 4px;
+    border-radius: 0.5em;
+    background-color: lightblue;
+    border: none;
+    cursor: pointer;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: end;
+}
+
+.settingErea {
+    background-color: whitesmoke;
+    padding-bottom: 0.1em;
+}
+
+.settingLabel {
+    color: darkblue;
+    font-size: large;
+}
+
+#URLLine {
+    width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#setRow {
+    width: 1.5em;
+    text-align: center;
+    appearance: textfield;
+}
+
 #inputText {
     height: 10em;
     width: 50em;
@@ -7,20 +53,18 @@
     font-family: monospace;
 }
 
-#display {
-    letter-spacing: 0.5em;
-}
-
-#display ruby {
-    ruby-position: under;
-}
-
-#display rt {
+.kanaWord {
     letter-spacing: 0.2em;
+}
+
+ruby {
+    ruby-position: under;
 }
 
 #answer table {
     border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #answer th{
