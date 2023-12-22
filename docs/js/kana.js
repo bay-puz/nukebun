@@ -29,19 +29,18 @@ function normalizeKana(char) {
     return char
 }
 
-function sliceText(text, row) {
-    var textLines = []
-    for (let index = 0; index < text.length; index+=row) {
-        const subText = text.substring(index, index + row)
-        textLines.push(subText)
-    }
-    return textLines
+function isNewLine(char) {
+    return char === "\n"
 }
 
-function splitText(textLine) {
+function isKutoten(char) {
+    return (char === "、" || char === "。")
+}
+
+function splitText(text) {
     var charList = []
-    for (let index = 0; index < textLine.length; index++) {
-        charList.push(normalizeKana(textLine.charAt(index)))
+    for (let index = 0; index < text.length; index++) {
+        charList.push(normalizeKana(text.charAt(index)))
     }
     var splitList = []
     var preIsKana = false

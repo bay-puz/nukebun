@@ -53,11 +53,13 @@ footer {
     font-family: monospace;
 }
 
-.kanaWord {
+#sentence {
     letter-spacing: 0.1em;
+    line-height: 2.5em;
+    text-align: center;
 }
 
-ruby {
+.kana {
     ruby-position: under;
     border-bottom: solid thin;
 }
