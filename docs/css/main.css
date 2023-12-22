@@ -1,0 +1,96 @@
+body {
+    text-align: center;
+}
+
+button {
+    padding: 4px;
+    border-radius: 0.5em;
+    background-color: lightblue;
+    border: none;
+    cursor: pointer;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: end;
+}
+
+.settingErea {
+    background-color: whitesmoke;
+    padding-bottom: 0.1em;
+}
+
+.settingLabel {
+    color: darkblue;
+    font-size: large;
+}
+
+#URLLine {
+    width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#setRow {
+    width: 1.5em;
+    text-align: center;
+    appearance: textfield;
+}
+
+#inputText {
+    height: 10em;
+    width: 50em;
+}
+
+#kanaAll {
+    font-family: monospace;
+}
+
+#sentence {
+    letter-spacing: 0.1em;
+    line-height: 2.5em;
+    text-align: center;
+}
+
+.kana {
+    ruby-position: under;
+    border-bottom: solid thin;
+}
+
+#answer table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#answer th{
+    font-size: small;
+}
+
+#answer td{
+    border: 1px solid;
+    min-width: 1.5em;
+    max-width: 1.5em;
+    height: 1.5em;
+}
+
+.charInput {
+    width: 1.2em;
+    border: none;
+    text-align: center;
+}
+
+.highlight {
+    background-color: beige;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>カタカナ抜け文</title>
+        <link href="./css/main.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <head>
+            <h1>カタカナ抜け文</h1>
+        </head>
+        <div class="settingErea">
+            <h2 class="displayEditMode">編集モード</h2>
+            <h2 class="displaySolveMode">解答モード</h2>
+            <p id="settingUrl">
+                <details id="URLErea">
+                    <summary class="settingLabel">
+                        URL出力
+                    </summary>
+                    <p>
+                        <button id="showEditUrl">編集</button>
+                        <button id="showSolveUrl">解答</button>
+                        <button id="showSolveCheckUrl">正解判定付き</button>
+                    </p>
+                    <p id="URLLine" class="hidden"><a href id="showURL" target="_blank"></a></p>
+                </details>
+            </p>
+            <p id="settingSize" class="displayEditMode">
+                <label for="setRow" class="settingLabel">１行の文字数</label>
+                <input type="number" id="setRow" min="1" value="30">
+            </p>
+        </div>
+        <div class="inputErea displayEditMode">
+            <label for="inputText">文を入力</label>
+            <br>
+            <textarea id="inputText" name="t"></textarea>
+            <br>
+            <label for="kanaAll">カタカナ一覧</label>
+            <br>
+            <input type="text" id="kanaAll" name="k" size="30">
+        </div>
+        <br>
+        <div id="analyticsErea" class="displayEditMode">
+            <details>
+                <summary>カタカナの使用数</summary>
+                <div id="countKana"></div>
+            </details>
+            <details>
+                <summary>カタカナ語の関係</summary>
+                <div>重複：<span id="sameWord">なし</span></div>
+                <div>同種：<span id="sameKindWord">なし</span></div>
+                <div>包含：<span id="includedWord">なし</span></div>
+            </details>
+        </div>
+        <div id="displayErea">
+            <p id="problem">問題文</p>
+            <p id="answer">解答表</p>
+        </div>
+        <script type="text/javascript" src="./js/kana.js"></script>
+        <script type="text/javascript" src="./js/analytics.js"></script>
+        <script type="text/javascript" src="./js/table.js"></script>
+        <script type="text/javascript" src="./js/main.js"></script>
+    </body>
+</html>
