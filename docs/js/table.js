@@ -103,20 +103,21 @@ function createAnswerBodyElement(length) {
 }
 
 function createInputCharElement(number) {
-    const elementId = getAnswerCharClass(number)
+    const elementId = getCharInputId(number)
     var inputElement = document.createElement("input")
     inputElement.id = elementId
     inputElement.classList.add("charInput")
     inputElement.addEventListener("change", function(){writeChar(number)})
+    inputElement.addEventListener("focusin", function(){highlight(number)})
     return inputElement
 }
 
 function writeChar(number) {
-    const elementId = getAnswerCharClass(number)
-    const inputElement = document.getElementById(elementId)
+    highlight(number)
+    const inputElement = document.getElementById(getCharInputId(number))
     const inputChar = getKatakana(inputElement.value)
 
-    var charElements = document.getElementsByClassName(elementId)
+    var charElements = document.getElementsByClassName(getAnswerCharClass(number))
     for (var charElement of charElements) {
         const newElement = createKanaElement(number, inputChar)
         charElement.innerHTML = newElement.innerHTML
@@ -132,19 +133,29 @@ function getAnswerCharClass(number) {
     return "answerChar" + String(number)
 }
 
+function getCharInputId(number) {
+    return "input" + String(number)
+}
+
 function highlightElement(element) {
-    clearHighlight()
     if(element === null) return
     for(const elementClass of element.classList){
         const number = getClassNumber(elementClass)
-        if (number < 0) return
-        console.log(number);
+        if (number < 0) continue
         highlight(number)
+        document.getElementById(getCharInputId(number)).focus()
+        return
     }
+    clearHighlight()
 }
 
 function highlight(number) {
+    clearHighlight()
     var elements = document.getElementsByClassName(getAnswerCharClass(number))
+    for (var element of elements) {
+        element.classList.add("highlight")
+    }
+    var elements = document.getElementsByClassName(getNumberClass(number))
     for (var element of elements) {
         element.classList.add("highlight")
     }

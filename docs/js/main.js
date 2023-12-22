@@ -73,6 +73,6 @@ function setMode(mode) {
 }
 
 function clickProblem(event) {
-    var element = document.elementFromPoint(event.pageX, event.pageY)
+    var element = document.elementFromPoint(event.clientX, event.clientY)
     highlightElement(element)
 }
