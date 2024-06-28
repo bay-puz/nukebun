@@ -126,3 +126,31 @@ function getKatakana(string) {
     }
     return ""
 }
+
+function strToCode(input, isKana = false) {
+    var code_list = []
+    const digit = isKana ? 2 : 4
+    for (let index = 0; index < input.length; index++) {
+        const char = input.charAt(index)
+        var code = char.codePointAt(0)
+        if (isKana) {
+            code -= 'ァ'.codePointAt(0)
+        }
+        code_list.push(code.toString(16).padStart(digit, '0'))
+    }
+    return code_list.join('')
+}
+
+function codeToStr(input, isKana = false) {
+    var str_list = []
+    const digit = isKana ? 2 : 4
+    for (let index = 0; index < input.length; index+=digit) {
+        const str = input.substring(index, index + digit)
+        var code = Number.parseInt(str, 16)
+        if (isKana) {
+            code += 'ァ'.codePointAt(0)
+        }
+        str_list.push(String.fromCodePoint(code))
+    }
+    return str_list.join('')
+}

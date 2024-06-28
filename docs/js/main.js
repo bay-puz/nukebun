@@ -12,8 +12,8 @@ function setProblem() {
     var params = new URLSearchParams(document.location.search);
     setMode(params.get("m"))
 
-    var text = params.has("t") ? params.get("t"): ""
-    var kanas = params.has("k") ? params.get("k") : ""
+    var text = params.has("t") ? codeToStr(params.get("t")): ""
+    var kanas = params.has("k") ? codeToStr(params.get("k"), true) : ""
     var row =params.has("r") ? Number(params.get("r")) : 30
     show(text, kanas, row)
     document.getElementById("inputText").value = text
@@ -51,8 +51,8 @@ function showUrl(mode) {
     } else {
         params.append("m", "edit")
     }
-    params.append("t", document.getElementById("inputText").value)
-    params.append("k", document.getElementById("kanaAll").value)
+    params.append("t", strToCode(document.getElementById("inputText").value))
+    params.append("k", strToCode(document.getElementById("kanaAll").value, true))
     params.append("r", document.getElementById("setRow").value)
 
     const url = new URL(location.href)
