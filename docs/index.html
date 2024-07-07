@@ -12,19 +12,17 @@
         <div class="settingErea">
             <h2 class="displayEditMode">編集モード</h2>
             <h2 class="displaySolveMode">解答モード</h2>
-            <p id="settingUrl">
-                <details id="URLErea">
-                    <summary class="settingLabel">
-                        URL出力
-                    </summary>
-                    <p>
-                        <button id="showEditUrl">編集</button>
-                        <button id="showSolveUrl">解答</button>
-                        <button id="showSolveCheckUrl">正解判定付き</button>
-                    </p>
-                    <p id="URLLine" class="hidden"><a href id="showURL" target="_blank"></a></p>
-                </details>
-            </p>
+            <details class=" displayEditMode">
+                <summary class="settingLabel">
+                    URL出力
+                </summary>
+                <p>
+                    <button id="showEditUrl">編集</button>
+                    <button id="showSolveUrl">解答</button>
+                    <button id="showSolveCheckUrl">正解判定付き</button>
+                </p>
+                <p id="URLLine" class="hidden"><a href id="showURL" target="_blank"></a></p>
+            </details>
             <p id="settingSize" class="displayEditMode">
                 <label for="setRow" class="settingLabel">１行の文字数</label>
                 <input type="number" id="setRow" min="1" value="30">

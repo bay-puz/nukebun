@@ -1,11 +1,18 @@
-function analytics(text, kanaSet) {
-    const words = splitText(text)
+function analytics(problemList, kanaSet) {
     var kanaWords = []
-    for (let index = 1; index < words.length; index+=2) {
-        const word = words[index]
-        if (word.length > 0) {
-            kanaWords.push(word)
+    var kanaL = []
+    for (const char of problemList) {
+        if (typeof(char) === "number" ) {
+            kanaL.push(numberToKana(char, kanaSet))
+            continue
         }
+        if (kanaL.length > 0) {
+            kanaWords.push(kanaL.join(''))
+            kanaL = []
+        }
+    }
+    if (kanaL.length > 0) {
+        kanaWords.push(kanaL.join(''))
     }
     const counts = countKana(kanaSet, kanaWords)
 
@@ -126,5 +133,24 @@ function getWordRelations(wordList) {
 }
 
 function kanaListFromStr(word) {
-    return Array.from(kanaSetFromStr(word)).sort()
+    var set = new Set()
+    for (let index = 0; index < word.length; index++) {
+        char = word.charAt(index)
+        if(isKana(char)) {
+            set.add(normalizeKana(char))
+        }
+    }
+    return Array.from(set).sort()
+}
+
+function isIncluded(list1, list2) {
+    if (list1.length >= list2.length) {
+        return false
+    }
+    for (const kana of list1) {
+        if (!list2.includes(kana)) {
+            return false
+        }
+    }
+    return true
 }

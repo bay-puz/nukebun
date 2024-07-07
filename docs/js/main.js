@@ -10,74 +10,66 @@ document.getElementById("problem").addEventListener("click", clickProblem);
 
 function setProblem() {
     var params = new URLSearchParams(document.location.search);
-    setMode(params.get("m"))
-
-    var problem = []
+    var isEdit = true
+    if (params.has("m") && params.get("m") != "edit" ) {
+        isEdit = false
+    }
+    setMode(isEdit)
+    var problemList = []
     if (params.has("t")) {
-        problem = codeToProblem(params.get("t"))
+        problemList = codeToProblem(params.get("t"))
     }
     var kanaSet = new Set()
     if (params.has("k")) {
         kanaSet = codeToKana(params.get("k"))
     }
     var row =params.has("r") ? Number(params.get("r")) : 30
-    const kanas = [...kanaSet].join('')
-    const text = toText(problem, kanas)
-    show(text, kanas, row)
-    document.getElementById("inputText").value = text
+    show(problemList, kanaSet, row, isEdit)
+    document.getElementById("inputText").value = problemToInput(problemList, kanaSet)
     document.getElementById("setRow").value = row
 }
 setProblem();
-
-function toText(problem, kanas) {
-    var text = []
-    for (const p of problem) {
-        if (typeof(p) == "number") {
-            text.push(kanas[p-1])
-        } else {
-            text.push(p)
-        }
-    }
-    return text.join('')
-}
 
 function update() {
     const text = document.getElementById("inputText").value
     const kanas = document.getElementById("kanaAll").value
     const row = document.getElementById("setRow").value
-    show(text, kanas, Number(row))
+    const problem = inputToProblem(text, kanas)
+    show(problem[0], problem[1], Number(row))
 }
 
-function show(text, kanas, row) {
-    if (!text || text.length === 0) {
+function show(problemList, kanaSet, row, isEdit = true) {
+    if (problemList.length === 0) {
         return
     }
-    const kanaSet = showProblem(text, kanas, row)
-    setKana(kanaSet)
-    analytics(text, kanaSet)
+
+    showProblem(problemList, kanaSet, row)
+    if (isEdit) {
+        showKana(kanaSet)
+        analytics(problemList, kanaSet)
+    }
 }
 
-function showProblem(text, kanas, row) {
-    const problem = inputToProblem(text, kanas)
-    const problemList = problem[0]
-    const kanaSet = problem[1]
+function showProblem(problemList, kanaSet, row) {
     const answerRow = Math.floor(row * 3 / 5)
 
     var problemElement = document.getElementById("problem")
     problemElement.innerHTML = null
     problemElement.appendChild(createProblemElement(problemList, row))
 
+    var answerSize = kanaSet.size
+    if (answerSize == 0) {
+        answerSize = kanaSetLength(problemList)
+    }
     var answerElement = document.getElementById("answer")
     answerElement.innerHTML = null
-    answerElement.appendChild(createAnswerElement(kanaSet.length, answerRow))
-
-    return kanaSet
+    answerElement.appendChild(createAnswerElement(answerSize, answerRow))
 }
 
-function setKana(kanas) {
+function showKana(kanaSet) {
     var kanaElement = document.getElementById("kanaAll")
-    kanaElement.value = kanas.join('')
-    kanaElement.size = kanas.length * 2 + 2
+    kanaElement.value = [...kanaSet].join('')
+    kanaElement.size = kanaSet.size * 2 + 2
 }
 
 function showUrl(isEdit, isCheck) {
@@ -94,7 +86,9 @@ function showUrl(isEdit, isCheck) {
 
     const problem = inputToProblem(text, kanas)
     params.append("t", problemToCode(problem[0]))
-    params.append("k", kanaToCode(problem[1]))
+    if (isEdit || isCheck) {
+        params.append("k", kanaToCode(problem[1]))
+    }
     params.append("r", row)
 
     const url = new URL(location.href)
@@ -106,8 +100,8 @@ function showUrl(isEdit, isCheck) {
     lineElement.classList.remove("hidden")
 }
 
-function setMode(mode) {
-    const hiddenClass = (mode === "solve") ? "displayEditMode" : "displaySolveMode"
+function setMode(isEdit) {
+    const hiddenClass = (isEdit) ? "displaySolveMode" : "displayEditMode"
     var elements = document.getElementsByClassName(hiddenClass);
     for (const element of elements) {
         element.classList.add("hidden")

@@ -41,81 +41,32 @@ function isKutoten(char) {
     return (char === "、" || char === "。")
 }
 
-function splitText(text) {
-    var charList = []
-    for (let index = 0; index < text.length; index++) {
-        charList.push(normalizeKana(text.charAt(index)))
+function kanaToNumber(kana, kanaSet) {
+    if (! kanaSet.has(kana)) {
+        return -1
     }
-    var splitList = []
-    var preIsKana = false
-    splitList.push('')
-    for (let index = 0; index < charList.length; index++) {
-        const char = charList[index]
-        const nowIsKana = isKana(char)
-        if (preIsKana === nowIsKana) {
-            const lastIndex = splitList.length - 1
-            splitList[lastIndex] += char
-        } else {
-            splitList.push(char)
-            preIsKana = nowIsKana
-        }
-    }
-    if (!preIsKana) {
-        splitList.push('')
-    }
-    return splitList
+    const kanaList = [...kanaSet]
+    return kanaList.indexOf(kana) + 1
 }
 
-function isIncluded(list1, list2) {
-    if (list1.length >= list2.length) {
-        return false
+function numberToKana(num, kanaSet) {
+    if (kanaSet.size < num) {
+        return ""
     }
-    for (const kana of list1) {
-        if (!list2.includes(kana)) {
-            return false
-        }
-    }
-    return true
+    const kanaList = [...kanaSet]
+    return kanaList[num - 1]
 }
 
-function kanaSetFromStr(kanaStr) {
-    var set = new Set()
-    for (let index = 0; index < kanaStr.length; index++) {
-        char = kanaStr.charAt(index)
-        if(isKana(char)) {
-            set.add(normalizeKana(char))
-        }
-    }
-    return set
-}
-
-function mergeKanaSet(baseSet, kanaList) {
-    var allKanaSet = new Set()
-    for(const word of kanaList) {
-        for (let index = 0; index < word.length; index++) {
-            allKanaSet.add(word[index])
-        }
-    }
+function mergeKanaSet(baseSet, addSet) {
     for (const kana of baseSet) {
-        if (!allKanaSet.has(kana)) {
+        if (!addSet.has(kana)) {
             baseSet.delete(kana)
         }
     }
-    for (const kana of allKanaSet) {
-        if (!baseSet.has(kana)) {
-            baseSet.add(kana)
-        }
+    for (const kana of addSet) {
+        baseSet.add(kana)
     }
-    return [...baseSet]
-}
-
-function getNumberList(kanaStr, kanaSet) {
-    var numbers = []
-    for (let index = 0; index < kanaStr.length; index++) {
-        char = kanaStr.charAt(index)
-        numbers.push(kanaSet.indexOf(char) + 1)
-    }
-    return numbers
+    return baseSet
 }
 
 function getKatakana(string) {
@@ -131,36 +82,56 @@ function getKatakana(string) {
     return ""
 }
 
-function inputToProblem(text, kanas) {
-    var noKanaWords = []
-    var kanaWords = []
-    var split = splitText(text)
-    for (let index = 0; index < split.length; index+=2) {
-        noKanaWords.push(split[index])
-        kanaWords.push(split[index + 1])
-    }
-    noKanaWords.push(getNewLine())
-
-    const inputKanaSet = kanaSetFromStr(kanas)
-    const kanaSet = mergeKanaSet(inputKanaSet, kanaWords)
-
-    var numberList = []
-    for (const word of kanaWords) {
-        numberList.push(getNumberList(word, kanaSet))
-    }
-
-    var problemList = []
-    for (let index = 0; index < numberList.length; index++) {
-        var noKana = noKanaWords[index]
-        for (let charIndex = 0; charIndex < noKana.length; charIndex++) {
-            problemList.push(noKana[charIndex])
+function kanaSetLength(problemList) {
+    var kanaSet = new Set()
+    for (const p of problemList) {
+        if (typeof(p) === "number") {
+            kanaSet.add(p)
         }
-        var number = numberList[index]
-        for (let numberIndex = 0; numberIndex < number.length; numberIndex++) {
-            problemList.push(number[numberIndex])
+    }
+    return kanaSet.size
+}
+
+function inputToProblem(text, kanas) {
+    var problemList = new Array()
+    var baseSet = new Set()
+    for (let index = 0; index < kanas.length; index++) {
+        const kana = kanas.charAt(index)
+        baseSet.add(kana)
+    }
+    var charList = []
+    var allKanaSet = new Set()
+    for (let index = 0; index < text.length; index++) {
+        const char = text.charAt(index)
+        if (isKana(char)) {
+            const kana = normalizeKana(char)
+            charList.push(kana)
+            allKanaSet.add(kana)
+        } else {
+            charList.push(char)
+        }
+    }
+    const kanaSet = mergeKanaSet(baseSet, allKanaSet)
+    for (const char of charList) {
+        if (isKana(char)) {
+            problemList.push(kanaToNumber(char, kanaSet))
+        } else {
+            problemList.push(char)
         }
     }
     return [problemList, kanaSet]
+}
+
+function problemToInput(problemList, kanaSet) {
+    var charList = []
+    for (const char of problemList) {
+        if (typeof(char) === "number") {
+            charList.push(numberToKana(char, kanaSet))
+        } else {
+            charList.push(char)
+        }
+    }
+    return charList.join('')
 }
 
 function encodeNumber(num) {
