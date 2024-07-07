@@ -29,8 +29,12 @@ function normalizeKana(char) {
     return char
 }
 
+function getNewLine() {
+    return "\n"
+}
+
 function isNewLine(char) {
-    return char === "\n"
+    return char === getNewLine()
 }
 
 function isKutoten(char) {
@@ -127,30 +131,108 @@ function getKatakana(string) {
     return ""
 }
 
-function strToCode(input, isKana = false) {
-    var code_list = []
-    const digit = isKana ? 2 : 4
-    for (let index = 0; index < input.length; index++) {
-        const char = input.charAt(index)
-        var code = char.codePointAt(0)
-        if (isKana) {
-            code -= 'ァ'.codePointAt(0)
-        }
-        code_list.push(code.toString(16).padStart(digit, '0'))
+function inputToProblem(text, kanas) {
+    var noKanaWords = []
+    var kanaWords = []
+    var split = splitText(text)
+    for (let index = 0; index < split.length; index+=2) {
+        noKanaWords.push(split[index])
+        kanaWords.push(split[index + 1])
     }
-    return code_list.join('')
+    noKanaWords.push(getNewLine())
+
+    const inputKanaSet = kanaSetFromStr(kanas)
+    const kanaSet = mergeKanaSet(inputKanaSet, kanaWords)
+
+    var numberList = []
+    for (const word of kanaWords) {
+        numberList.push(getNumberList(word, kanaSet))
+    }
+
+    var problemList = []
+    for (let index = 0; index < numberList.length; index++) {
+        var noKana = noKanaWords[index]
+        for (let charIndex = 0; charIndex < noKana.length; charIndex++) {
+            problemList.push(noKana[charIndex])
+        }
+        var number = numberList[index]
+        for (let numberIndex = 0; numberIndex < number.length; numberIndex++) {
+            problemList.push(number[numberIndex])
+        }
+    }
+    return [problemList, kanaSet]
 }
 
-function codeToStr(input, isKana = false) {
-    var str_list = []
-    const digit = isKana ? 2 : 4
-    for (let index = 0; index < input.length; index+=digit) {
-        const str = input.substring(index, index + digit)
-        var code = Number.parseInt(str, 16)
-        if (isKana) {
-            code += 'ァ'.codePointAt(0)
+function encodeNumber(num) {
+    const converter = "0123456789abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXY"
+    return 'z' + converter.charAt(num)
+}
+
+function decodeNumber(char) {
+    const converter = "0123456789abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXY"
+    return converter.indexOf(char)
+}
+
+function encodeChar(char) {
+    return char.codePointAt(0).toString(16).padStart(4, '0')
+}
+
+function decodeChar(str) {
+    return String.fromCodePoint(Number.parseInt(str, 16))
+}
+
+function encodeKana(kana) {
+    const codePoint = kana.codePointAt(0) - 'ァ'.codePointAt(0)
+    return codePoint.toString(16).padStart(2, '0')
+}
+
+function decodeKana(str) {
+    const codePoint = Number.parseInt(str, 16) + 'ァ'.codePointAt(0)
+    return String.fromCodePoint(codePoint)
+}
+
+function problemToCode(problemList) {
+    var codeList = []
+    for (const p of problemList) {
+        if (typeof(p) === "number") {
+            codeList.push(encodeNumber(p))
+        } else {
+            codeList.push(encodeChar(p))
         }
-        str_list.push(String.fromCodePoint(code))
     }
-    return str_list.join('')
+    return codeList.join('')
+}
+
+function kanaToCode(kanaSet) {
+    codeList = []
+    for (const kana of kanaSet) {
+        codeList.push(encodeKana(kana))
+    }
+    return codeList.join('')
+}
+
+function codeToProblem(code) {
+    var problem = []
+    for (let index = 0; index < code.length;) {
+        const head = code.substring(index, index + 1)
+        if (head === 'z') {
+            const char = code.substring(index + 1, index + 2)
+            problem.push(decodeNumber(char))
+            index += 2
+            continue
+        }
+        var str = code.substring(index, index + 4)
+        problem.push(decodeChar(str))
+        index += 4
+    }
+    return problem
+}
+
+function codeToKana(code) {
+    var kanaSet = new Set()
+    for (let index = 0; index < code.length; index += 2) {
+        const str = code.substring(index, index + 2)
+        kanaSet.add(decodeKana(str))
+    }
+    return kanaSet
 }
