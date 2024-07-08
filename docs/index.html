@@ -19,7 +19,6 @@
                 <p>
                     <button id="showEditUrl">編集</button>
                     <button id="showSolveUrl">解答</button>
-                    <button id="showSolveCheckUrl">正解判定付き</button>
                 </p>
                 <p id="URLLine" class="hidden"><a href id="showURL" target="_blank"></a></p>
             </details>
@@ -54,6 +53,13 @@
             <p id="problem">問題文</p>
             <p id="answer">解答表</p>
         </div>
+        <div class="displaySolveMode">
+            <button id="checkProblem">正解判定</button>
+        </div>
+        <dialog id="dialog">
+            <p id="dialogMessage">Message</p>
+            <button id="dialogButton">OK</button>
+        </dialog>
         <script type="text/javascript" src="./js/kana.js"></script>
         <script type="text/javascript" src="./js/analytics.js"></script>
         <script type="text/javascript" src="./js/table.js"></script>

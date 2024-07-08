@@ -164,3 +164,12 @@ function getClassNumber(className) {
     }
     return -1
 }
+
+function getBoardKanaList() {
+    var kanaList = new Array()
+    const elements = document.getElementsByClassName("charInput")
+    for (const element of elements) {
+        kanaList.push(element.value)
+    }
+    return kanaList
+}

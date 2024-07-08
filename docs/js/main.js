@@ -2,12 +2,12 @@ document.getElementById("inputText").addEventListener("input", update)
 document.getElementById("kanaAll").addEventListener("change", update)
 document.getElementById("setRow").addEventListener("change", updateSize)
 
-document.getElementById("showEditUrl").addEventListener("click", function(){showUrl(true, false)} );
-document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)} );
-document.getElementById("showSolveCheckUrl").addEventListener("click", function(){showUrl(false, true)} );
+document.getElementById("showEditUrl").addEventListener("click", function(){showUrl(true)});
+document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false)});
+
+document.getElementById("checkProblem").addEventListener("click", checkProblem);
 
 document.getElementById("problem").addEventListener("click", clickProblem);
-
 
 function setMode() {
     const hiddenClass = (isEditMode()) ? "displaySolveMode" : "displayEditMode"
@@ -89,7 +89,7 @@ function showKana(kanaSet) {
     kanaElement.size = kanaSet.size * 2 + 2
 }
 
-function showUrl(isEdit, isCheck) {
+function showUrl(isEdit) {
     var params = new URLSearchParams();
     if (isEdit) {
         params.append("m", "edit")
@@ -103,9 +103,7 @@ function showUrl(isEdit, isCheck) {
 
     const problem = inputToProblem(text, kanas)
     params.append("t", problemToCode(problem[0]))
-    if (isEdit || isCheck) {
-        params.append("k", kanaToCode(problem[1]))
-    }
+    params.append("k", kanaToCode(problem[1]))
     params.append("r", row)
 
     const url = new URL(location.href)
@@ -128,4 +126,34 @@ function isEditMode() {
 function clickProblem(event) {
     var element = document.elementFromPoint(event.clientX, event.clientY)
     highlightElement(element)
+}
+
+function checkProblem() {
+    const params = new URLSearchParams(document.location.search);
+    if (!params.has("k") || !params.has("m") || params.get("m") !== "solve") {
+        say("このURLでは正解判定は使えません。")
+        return
+    }
+    const kanaList = getBoardKanaList()
+    if (kanaList.includes("")) {
+        say("未完成です")
+        return
+    }
+    const answerKanaSet = codeToKana(params.get("k"))
+    const answerKanaList = [...answerKanaSet]
+
+    if (answerKanaList.toString() === kanaList.toString()) {
+        say("正解です！")
+    } else {
+        say("間違っているところがあります")
+    }
+}
+
+function say(msg) {
+    const dialog = document.getElementById("dialog")
+    const dialogButton = document.getElementById("dialogButton")
+    dialogButton.addEventListener("click", function(){dialog.close()})
+    const dialogMessage = document.getElementById("dialogMessage")
+    dialogMessage.innerText = msg
+    dialog.showModal()
 }

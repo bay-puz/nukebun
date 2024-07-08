@@ -9,17 +9,24 @@ button {
     border: none;
     cursor: pointer;
 }
+
 a {
     text-decoration: none;
     color: black;
 }
-
 a:hover {
     text-decoration: underline;
 }
 
 footer {
     text-align: end;
+}
+
+dialog {
+    border-radius: 1em;
+    border-color: grey;
+    padding-top: 0em;
+    padding-bottom: 0.3em;
 }
 
 .settingErea {
