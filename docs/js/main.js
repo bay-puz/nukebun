@@ -1,6 +1,6 @@
 document.getElementById("inputText").addEventListener("input", update)
 document.getElementById("kanaAll").addEventListener("change", update)
-document.getElementById("setRow").addEventListener("change", update)
+document.getElementById("setRow").addEventListener("change", updateSize)
 
 document.getElementById("showEditUrl").addEventListener("click", function(){showUrl(true, false)} );
 document.getElementById("showSolveUrl").addEventListener("click", function(){showUrl(false, false)} );
@@ -8,13 +8,18 @@ document.getElementById("showSolveCheckUrl").addEventListener("click", function(
 
 document.getElementById("problem").addEventListener("click", clickProblem);
 
-function setProblem() {
-    var params = new URLSearchParams(document.location.search);
-    var isEdit = true
-    if (params.has("m") && params.get("m") != "edit" ) {
-        isEdit = false
+
+function setMode() {
+    const hiddenClass = (isEditMode()) ? "displaySolveMode" : "displayEditMode"
+    var elements = document.getElementsByClassName(hiddenClass);
+    for (const element of elements) {
+        element.classList.add("hidden")
     }
-    setMode(isEdit)
+}
+setMode();
+
+function setProblem(row = -1) {
+    var params = new URLSearchParams(document.location.search);
     var problemList = []
     if (params.has("t")) {
         problemList = codeToProblem(params.get("t"))
@@ -23,8 +28,10 @@ function setProblem() {
     if (params.has("k")) {
         kanaSet = codeToKana(params.get("k"))
     }
-    var row =params.has("r") ? Number(params.get("r")) : 30
-    show(problemList, kanaSet, row, isEdit)
+    if (row < 0) {
+        var row = params.has("r")? Number(params.get("r")) : 30
+    }
+    show(problemList, kanaSet, row)
     document.getElementById("inputText").value = problemToInput(problemList, kanaSet)
     document.getElementById("setRow").value = row
 }
@@ -38,19 +45,29 @@ function update() {
     show(problem[0], problem[1], Number(row))
 }
 
-function show(problemList, kanaSet, row, isEdit = true) {
+function updateSize() {
+    if (isEditMode()) {
+        update()
+    } else {
+        const row = document.getElementById("setRow").value
+        setProblem(row)
+    }
+}
+
+function show(problemList, kanaSet, row) {
     if (problemList.length === 0) {
         return
     }
 
     showProblem(problemList, kanaSet, row)
-    if (isEdit) {
+    if (isEditMode()) {
         showKana(kanaSet)
         analytics(problemList, kanaSet)
     }
 }
 
 function showProblem(problemList, kanaSet, row) {
+    row = (row < 5)? 5: row
     const answerRow = Math.floor(row * 3 / 5)
 
     var problemElement = document.getElementById("problem")
@@ -100,12 +117,12 @@ function showUrl(isEdit, isCheck) {
     lineElement.classList.remove("hidden")
 }
 
-function setMode(isEdit) {
-    const hiddenClass = (isEdit) ? "displaySolveMode" : "displayEditMode"
-    var elements = document.getElementsByClassName(hiddenClass);
-    for (const element of elements) {
-        element.classList.add("hidden")
+function isEditMode() {
+    const params = new URLSearchParams(document.location.search);
+    if (params.has("m") && params.get("m") == "solve") {
+        return false
     }
+    return true
 }
 
 function clickProblem(event) {
