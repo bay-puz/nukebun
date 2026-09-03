@@ -30,7 +30,7 @@ function createProblemElement(problem, row) {
 
 function createKanaElement(number, kana = "") {
     var rubyElement = document.createElement("ruby")
-    rubyElement.innerText = kana.length === 1 ? kana : "　"
+    rubyElement.innerText = kana.length === 1 ? kana : "＿"
     rubyElement.classList.add(getAnswerCharClass(number))
     rubyElement.classList.add("kana")
 

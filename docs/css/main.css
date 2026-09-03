@@ -61,14 +61,21 @@ dialog {
 }
 
 #sentence {
-    letter-spacing: 0.1em;
+    letter-spacing: 0.4em;
     line-height: 2.5em;
     text-align: center;
 }
 
 .kana {
     ruby-position: under;
-    border-bottom: solid thin;
+    ruby-align: center;
+}
+
+.kana rt {
+    font-size: x-small;
+    letter-spacing: 0em;
+    color: black;
+    margin-right: 0.5em;
 }
 
 #answer table {
