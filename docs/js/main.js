@@ -41,8 +41,10 @@ function update() {
     const text = document.getElementById("inputText").value
     const kanas = document.getElementById("kanaAll").value
     const row = document.getElementById("setRow").value
-    const problem = inputToProblem(text, kanas)
+    const isInputNumber = document.getElementById("isInputNumber").checked
+    const problem = inputToProblem(text, kanas, isInputNumber)
     show(problem[0], problem[1], Number(row))
+    kanas.value = problem[1]
 }
 
 function updateSize() {
@@ -99,9 +101,10 @@ function showUrl(isEdit) {
 
     const text = document.getElementById("inputText").value
     const kanas = document.getElementById("kanaAll").value
+    const isInputNumber = document.getElementById("isInputNumber").checked
     const row = document.getElementById("setRow").value
 
-    const problem = inputToProblem(text, kanas)
+    const problem = inputToProblem(text, kanas, isInputNumber)
     params.append("t", problemToCode(problem[0]))
     params.append("k", kanaToCode(problem[1]))
     params.append("r", row)

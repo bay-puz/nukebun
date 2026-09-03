@@ -92,12 +92,16 @@ function kanaSetLength(problemList) {
     return kanaSet.size
 }
 
-function inputToProblem(text, kanas) {
+function inputToProblem(text, kanas, isInputNumber = false) {
     var problemList = new Array()
     var baseSet = new Set()
     for (let index = 0; index < kanas.length; index++) {
         const kana = kanas.charAt(index)
-        baseSet.add(kana)
+        if (isKana(kana)) {
+            baseSet.add(normalizeKana(kana))
+        }else if (isHira(kana)) {
+            baseSet.add(convertHira(kana))
+        }
     }
     var charList = []
     var allKanaSet = new Set()
@@ -111,10 +115,17 @@ function inputToProblem(text, kanas) {
             charList.push(char)
         }
     }
-    const kanaSet = mergeKanaSet(baseSet, allKanaSet)
+    var kanaSet = new Set()
+    if (isInputNumber) {
+        kanaSet = baseSet
+    } else {
+        kanaSet = mergeKanaSet(baseSet, allKanaSet)
+    }
     for (const char of charList) {
         if (isKana(char)) {
             problemList.push(kanaToNumber(char, kanaSet))
+        } else if(isInputNumber && Number(char)) {
+            problemList.push(Number(char))
         } else {
             problemList.push(char)
         }
